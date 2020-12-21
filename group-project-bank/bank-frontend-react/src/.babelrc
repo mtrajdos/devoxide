@@ -1,0 +1,8 @@
+// preset-env handles transformation of es6 into common js
+// preset-react handles jsx
+// turns our code into something the browser can run
+// may be necessary for modern sites.
+{
+    "presets": ["@babel/preset-env", "@babel/preset-react"],
+    "plugins": ["@babel/plugin-transform-runtime"]
+}

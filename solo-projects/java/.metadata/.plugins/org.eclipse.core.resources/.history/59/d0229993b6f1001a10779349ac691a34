@@ -1,0 +1,221 @@
+package com.fdm.Bank.Services;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
+
+import com.fdm.Bank.Models.LoanDetails;
+
+@Service
+public class LoanCheckerService {
+	
+	private static Logger LOGGER = LogManager.getLogger(LoanCheckerService.class);
+	
+	public Boolean mortgageValidCheck(LoanDetails loanDetails) {
+		BigDecimal yearlyWage = loanDetails.getYearlyWage();
+		BigDecimal loan = loanDetails.getLoan();
+		BigDecimal threeYearWages = yearlyWage.multiply(new BigDecimal("3"));
+		if (threeYearWages.compareTo(loan) == 1 || threeYearWages.compareTo(loan) == 0) {
+			loanDetails.setLoanAffordable("a");
+			LOGGER.info("Mortgage Valid!");
+			return true;
+		}
+		loanDetails.setLoanAffordable("b");
+		LOGGER.info("Mortgage IN-Valid!");
+		return false;
+	}
+	
+	public BigDecimal calculateMaximumLoan(LoanDetails loanDetails) {
+		LOGGER.info("LoanDetails object from react: " + loanDetails);
+		BigDecimal yearlyWage = loanDetails.getYearlyWage();
+		BigDecimal loan = loanDetails.getLoan();
+		if (mortgageValidCheck(loanDetails)) {
+		} else {
+			loan = yearlyWage.multiply(new BigDecimal("3"));
+		}
+		LOGGER.info("Calculate maximum loan method Returning Loan: " + loan);
+		return loan;
+	}
+
+//	private BigDecimal topTaxBracketCalculation(BigDecimal grossYearlyWage) {
+//		BigDecimal totalTaxPaid = new BigDecimal(0);
+//		BigDecimal topTaxable = grossYearlyWage.subtract(new BigDecimal(150000));
+//		totalTaxPaid = totalTaxPaid.add(topTaxable.multiply(new BigDecimal(0.46)));
+//		LOGGER.info("The rich bracket, returning " + totalTaxPaid);
+//		return totalTaxPaid;
+//	}
+
+//	private BigDecimal higherTaxBracketCalculation(BigDecimal grossYearlyWage) {
+//		BigDecimal totalTaxPaid = new BigDecimal(0);
+//		BigDecimal higherTaxable = grossYearlyWage.subtract(new BigDecimal(43430));
+//		totalTaxPaid = totalTaxPaid.add(higherTaxable.multiply(new BigDecimal(0.41)));
+//		LOGGER.info("Higher calculation, returning " + totalTaxPaid);
+//		return totalTaxPaid;
+//	}
+
+//	private BigDecimal intermediateTaxBracketCalculation(BigDecimal grossYearlyWage) {
+//		BigDecimal totalTaxPaid = new BigDecimal(0);
+//		BigDecimal intermediateTaxable = grossYearlyWage.subtract(new BigDecimal(25158));
+//		totalTaxPaid = totalTaxPaid.add(intermediateTaxable.multiply(new BigDecimal(0.21)));
+//		LOGGER.info("Intermediate calculation, returning" + totalTaxPaid);
+//		return totalTaxPaid;
+//	}
+
+//	private BigDecimal basicTaxBracketCalculation(BigDecimal grossYearlyWage) {
+//		BigDecimal totalTaxPaid = new BigDecimal(0);
+//		BigDecimal basicTaxable = grossYearlyWage.subtract(new BigDecimal(14585));
+//		totalTaxPaid = totalTaxPaid.add(basicTaxable.multiply(new BigDecimal(0.2)));
+//		LOGGER.info("basic bracket method, returning " + totalTaxPaid);
+//		return totalTaxPaid;
+//	}
+
+//	private BigDecimal starterTaxBracketCalculation(BigDecimal grossYearlyWage) {
+//		BigDecimal starterTaxable = grossYearlyWage.subtract(new BigDecimal(12500));
+//		BigDecimal totalTaxPaid = new BigDecimal(0);
+//		totalTaxPaid = totalTaxPaid.add(starterTaxable.multiply(new BigDecimal(0.19)));
+//		LOGGER.info("Starter tax calculation method returning: " + totalTaxPaid);
+//		return totalTaxPaid;
+//	}
+
+	public BigDecimal calculateTaxFreePersonalAllowance(BigDecimal allowance, BigDecimal yearlyIncome) {
+		Double yearlyIncomeAfterCalculation = yearlyIncome.subtract(new BigDecimal(100000)).doubleValue();
+		if (yearlyIncomeAfterCalculation < 2) {
+			LOGGER.info("Yearly income is too low to change tax free allowance");
+			return allowance;
+		} else if (yearlyIncomeAfterCalculation >= (allowance.intValue() * 2)) {
+			LOGGER.info("Yearly income is so high, tax free allowance is zero");
+			return new BigDecimal(0);
+		} else {
+			int count = 0;
+			LOGGER.info("Calculating how much of tax allowance is to be removed");
+			while (yearlyIncomeAfterCalculation >= 1.99) {
+				yearlyIncomeAfterCalculation -= 2;
+				++count;
+			}
+			LOGGER.info("Returning amount of allowance remaining for yearly income.");
+			return new BigDecimal(allowance.doubleValue() - count);
+		}
+	}
+	
+//	public BigDecimal calculateNetWage(LoanDetails loanDetails) {
+//		BigDecimal netWage = new BigDecimal(0.00);
+//		BigDecimal grossYearlyWage = loanDetails.getYearlyWage();
+//		BigDecimal oneHundrenAndFiftyThousand = new BigDecimal(150000);
+//		BigDecimal fortyThreeThousand = new BigDecimal(43430);
+//		BigDecimal twentyFiveThousand = new BigDecimal(25158);
+//		BigDecimal fourteenThousand = new BigDecimal(14585);
+//		BigDecimal twelveThousand = new BigDecimal(12500);
+//		BigDecimal totalTaxPaid = new BigDecimal(0.00);
+//
+//		if (grossYearlyWage.compareTo(twelveThousand) <= 0) {
+//
+//		} else if (grossYearlyWage.compareTo(fourteenThousand) <= 0) {
+//			totalTaxPaid = starterTaxBracketCalculation(grossYearlyWage);
+//		} else if (grossYearlyWage.compareTo(twentyFiveThousand) <= 0) {
+//			totalTaxPaid = starterTaxBracketCalculation(fourteenThousand)
+//					.add(basicTaxBracketCalculation(grossYearlyWage));
+//			LOGGER.info("Basic + Starter bracket, total tax: " + totalTaxPaid);
+//		} else if (grossYearlyWage.compareTo(fortyThreeThousand) <= 0) {
+//			totalTaxPaid = starterTaxBracketCalculation(fourteenThousand)
+//					.add(basicTaxBracketCalculation(twentyFiveThousand))
+//					.add(intermediateTaxBracketCalculation(grossYearlyWage));
+//			LOGGER.info("Intermediate + Basic + Starter bracket, total tax: " + totalTaxPaid);
+//		} else if (grossYearlyWage.compareTo(oneHundrenAndFiftyThousand) <= 0) {
+//			totalTaxPaid = starterTaxBracketCalculation(fourteenThousand)
+//					.add(basicTaxBracketCalculation(twentyFiveThousand))
+//					.add(intermediateTaxBracketCalculation(fortyThreeThousand))
+//					.add(higherTaxBracketCalculation(grossYearlyWage));
+//			LOGGER.info("Higher + Intermediate + Basic + Starter bracket, total tax: " + totalTaxPaid);
+//		} else {
+//			totalTaxPaid = starterTaxBracketCalculation(fourteenThousand)
+//					.add(basicTaxBracketCalculation(twentyFiveThousand))
+//					.add(intermediateTaxBracketCalculation(fortyThreeThousand))
+//					.add(higherTaxBracketCalculation(oneHundrenAndFiftyThousand))
+//					.add(topTaxBracketCalculation(grossYearlyWage));
+//			LOGGER.info("Top + Higher + Intermediate + Basic + Starter bracket, total tax: " + totalTaxPaid);
+//		}
+//		LOGGER.info("Total tax paid " + totalTaxPaid);
+//		netWage = grossYearlyWage.subtract(totalTaxPaid);
+//		LOGGER.info("Net Wage set to: " + netWage);
+//		return netWage;
+//	}
+
+	public BigDecimal taxBracketCalculation(BigDecimal grossYearlyWage) {
+		BigDecimal starterPersonalAllowance = calculateTaxFreePersonalAllowance(new BigDecimal(12500),grossYearlyWage);
+		BigDecimal starterTaxable = grossYearlyWage.subtract(starterPersonalAllowance);
+		if(starterTaxable.doubleValue() <= 0){
+			return new BigDecimal(0);
+		}else {
+			if (starterTaxable.doubleValue() <= 2085) {
+				return starterTaxable.multiply(new BigDecimal(0.19));
+			} else {
+				BigDecimal firstTaxAmount = new BigDecimal(2085).multiply(new BigDecimal(0.19)).setScale(2, RoundingMode.UP);
+				BigDecimal nextTaxAmount = starterTaxable.subtract(new BigDecimal(2085));
+				return firstTaxAmount.add(basicTaxBracketCalculation(nextTaxAmount));
+			}
+		}
+	}
+
+	private BigDecimal basicTaxBracketCalculation(BigDecimal taxableAmount) {
+		if(taxableAmount.doubleValue() <= 10573){
+			return taxableAmount.multiply(new BigDecimal(0.20));
+		}else{
+			BigDecimal nextTaxAmount = taxableAmount.subtract(new BigDecimal(10573));
+			BigDecimal secondTaxableAmount = new BigDecimal(10573).multiply(new BigDecimal(0.20)).setScale(2, RoundingMode.UP);
+			return secondTaxableAmount.add(intermediateTaxBracketCalculation(nextTaxAmount));
+		}
+	}
+
+	private BigDecimal intermediateTaxBracketCalculation(BigDecimal taxableAmount) {
+		if (taxableAmount.doubleValue() <= 18272){
+			return taxableAmount.multiply(new BigDecimal(0.21));
+		}else{
+			BigDecimal nextTaxAmount = taxableAmount.subtract(new BigDecimal(18272));
+			BigDecimal thirdTaxableAmount = new BigDecimal(18272).multiply(new BigDecimal(0.21)).setScale(2, RoundingMode.UP);
+			return thirdTaxableAmount.add(higherTaxBracketCalculation(nextTaxAmount));
+		}
+	}
+
+	private BigDecimal higherTaxBracketCalculation(BigDecimal taxableAmount) {
+		if (taxableAmount.doubleValue() <= 106570){
+			return taxableAmount.multiply(new BigDecimal(0.41));
+		}else{
+			BigDecimal nextTaxAmount = taxableAmount.subtract(new BigDecimal(106570));
+			BigDecimal forthTaxableAmount = new BigDecimal(106570).multiply(new BigDecimal(0.41)).setScale(2, RoundingMode.UP);
+			return forthTaxableAmount.add(topTaxBracketCalculation(nextTaxAmount));
+		}
+	}
+
+	private BigDecimal topTaxBracketCalculation(BigDecimal taxableAmount) {
+		return taxableAmount.multiply(new BigDecimal(0.46)).setScale(2, RoundingMode.UP);
+	}
+
+	public BigDecimal calculateNetWage (LoanDetails loanDetails){
+		BigDecimal yearlyWage = loanDetails.getYearlyWage();
+		BigDecimal tax = taxBracketCalculation(yearlyWage);
+		LOGGER.info("Tax Deduction: " + tax);
+		BigDecimal NIC = nationalInsuranceContributions(yearlyWage);
+		return yearlyWage.subtract(tax).subtract(NIC);
+	}
+
+	public BigDecimal nationalInsuranceContributions(BigDecimal yearlyWage){
+		BigDecimal weeklyWage = yearlyWage.divide(new BigDecimal(52.00),2,RoundingMode.UP);
+		BigDecimal weeklyWageDeductible = weeklyWage.subtract(new BigDecimal(182));
+		if(weeklyWageDeductible.doubleValue() >= 0) {
+			if (weeklyWageDeductible.doubleValue() <= 780) {
+				return weeklyWageDeductible.multiply(new BigDecimal(0.12)).multiply(new BigDecimal(52));
+			} else {
+				BigDecimal amountAfterFirstContributions = weeklyWage.subtract(new BigDecimal(780));
+				BigDecimal twelvePercentDeduction = weeklyWageDeductible.multiply(new BigDecimal(0.12));
+				BigDecimal twoPercentDeduction = amountAfterFirstContributions.multiply(new BigDecimal(0.02));
+				BigDecimal weeklyTotal = twelvePercentDeduction.add(twoPercentDeduction);
+				return weeklyTotal.multiply(new BigDecimal(52)).setScale(2, RoundingMode.UP);
+			}
+		}else{
+			return new BigDecimal(0);
+		}
+	}
+}

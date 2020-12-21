@@ -1,0 +1,12 @@
+.components {
+  margin: 30px 0px 0px 30px;
+  width: 150%;
+  border: 2px solid lightblue;
+}
+
+@media (max-width: 48em) {
+  .components {
+    margin: 30px 0px 0px 80px;
+    width: 100%;
+  }
+}

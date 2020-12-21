@@ -1,0 +1,50 @@
+<h2>Create New Hotel</h2>
+
+
+<form (ngSubmit)="editHotel()">
+  <mat-form-field>
+    <mat-label>Hotel Name:</mat-label>
+    <input matInput name="hotelName" required autocomplete="off"
+           type="text" [(ngModel)]="editHotelForm.hotelName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Address:</mat-label>
+    <input matInput name="address" required
+           type="text" [(ngModel)]="editHotelForm.address">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Postcode:</mat-label>
+    <input matInput name="postcode" required
+           type="text" [(ngModel)]="editHotelForm.postcode">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>City:</mat-label>
+    <input matInput name="city" required
+           type="text" [(ngModel)]="editHotelForm.city">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Amenities:</mat-label>
+    <input matInput name="amenities" required
+           type="text" [(ngModel)]="editHotelForm.amenities">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label> Room Types:</mat-label>
+    <mat-select [(ngModel)]="editHotelForm.room" [compareWith]="roomComparer" name="room" multiple>
+      <mat-option *ngFor="let room of rooms" [value]="room" >
+        {{room.roomType}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Star Rating:</mat-label>
+    <input matInput type="number" max="5" min="0" name="starRating" required
+           [(ngModel)]="editHotelForm.starRating">
+  </mat-form-field>
+  <section>
+    <mat-checkbox name="airportTransfers" [(ngModel)]="editHotelForm.airportTransfers">Airport Transfer</mat-checkbox>
+  </section>
+  <div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
+  <input type="hidden" name="hotelId" [(ngModel)]="editHotelForm.hotelId">
+</form>
