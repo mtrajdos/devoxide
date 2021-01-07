@@ -1,9 +1,23 @@
+* {
+    font-family: "Eurostile";
+    src: url("/Eurostile.ttf")
+}
+
 .container {
     padding: 15px;
 }
 
-#navBar {
+#topBar {
     width: 100%;
     height: auto;
-    background-color: bisque;
+    background-color: beige;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#businessDesc {
+    font-size: 40px;
+    font-weight: bold;
+    padding: 20px;
 }

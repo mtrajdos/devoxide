@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Row from 'react-bootstrap/Row';
 import TopBar from './topbar.js';
-import Col from 'react-bootstrap/Col';
 import '../styling.css';
  
 export default class Home extends Component {
