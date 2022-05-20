@@ -1,0 +1,12 @@
+<div class="container">
+  <h1>Welcome to the Hotel Booking site!</h1>
+  <form (submit)="searchHotels()">
+    <h3>Search for a Hotel</h3>
+    <input type="text" class="form-control" [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" placeholder="Search by city or room type...">
+    <input type="submit" class="btn btn-primary" value="Search">
+  </form>
+  <div *ngIf="foundHotels.length > 0">
+    <a *ngFor="let hotel of foundHotels" class="nav-link"
+       routerLink="/hotel/{{hotel.hotelId}}">{{hotel.hotelName}} in {{ hotel.city }}</a>
+  </div>
+</div>

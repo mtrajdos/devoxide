@@ -1,0 +1,19 @@
+<h1>User Login</h1>
+<form #LoginForm="ngForm" (ngSubmit)="onSubmit(LoginForm)" novalidate>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput name="username" required #username="ngModel" type="text"
+           [(ngModel)]="login.username" autocomplete="username">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput name="password" required #password="ngModel" type="password"
+           [(ngModel)]="login.password" autocomplete="current-password">
+  </mat-form-field>
+    <button [disabled]="LoginForm.invalid || username.untouched || password.untouched" class="btn btn-primary"
+            type="submit">Login
+    </button>
+  or
+  <button class="btn btn-primary" routerLink="/register">Register</button>
+</form>
+
