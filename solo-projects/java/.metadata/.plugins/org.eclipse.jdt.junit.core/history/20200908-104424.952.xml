@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="LoanCheckerTests.testThatNetWageIsScrapedAfterUsingExternalCalculator" project="bank-backend" tests="1" started="1" failures="0" errors="0" ignored="0">
-  <testsuite name="com.fdm.Bank.LoanCheckerTests" time="0.755" displayname="LoanCheckerTests" uniqueid="[engine:junit-jupiter]/[class:com.fdm.Bank.LoanCheckerTests]">
-    <testcase name="testThatNetWageIsScrapedAfterUsingExternalCalculator" classname="com.fdm.Bank.LoanCheckerTests" time="0.755" displayname="testThatNetWageIsScrapedAfterUsingExternalCalculator()" uniqueid="[engine:junit-jupiter]/[class:com.fdm.Bank.LoanCheckerTests]/[method:testThatNetWageIsScrapedAfterUsingExternalCalculator()]"/>
-  </testsuite>
-</testrun>
