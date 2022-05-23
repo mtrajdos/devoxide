@@ -1,51 +1,68 @@
+# Import required libraries
 import pandas as pd
-from sklearn import datasets
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
+import os
+import sys
+import mne
+import numpy as np
+import pandas as pd
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import ttk
+import matplotlib.pyplot as plt
+import time
 
-iris = datasets.load_iris()
-X = iris.data
-y = iris.target
+# Ask for user input to pick the raw .edf file
+print("Please select the raw .edf file of the sleep recording", file=sys.stderr)
+edfFile = filedialog.askopenfilename(filetypes=[("Edf Files", "*.edf")])
 
-df = pd.read_csv("/home/dioxan/UvA/FinalResults/Michal/21-03-2022/21-03-2022-MichalScores-MichalScorer.YASA.csv")
-X = df.drop(['stage'], axis=1)
-X = X.astype(float)
-y = df.stage
+# Open the .edf with MNE package to load and preprocess the data in Python
+edfFile_EEG_right_uV = mne.io.read_raw_edf(edfPath, preload=True)
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42)
+# Make extra copies for other channel derivations
+edfFileEEG_left_uV = edfFile_EEG_right_uV
+edfFileEEG_mixedChannel_uV = edfFile_EEG_right_uV
+edfFileAccelerometer_X = edfFile_EEG_right_uV
+edfFileAccelerometer_Y = edfFile_EEG_right_uV
+edfFileAccelerometer_Z = edfFile_EEG_right_uV
+edfFilePPG = edfFile_EEG_right_uV
+edfFileAudio_dB = edfFile_EEG_right_uV
 
-lr = LinearRegression()
-lr.fit(X_train, y_train)
+# Extract EEG right (uV) channel
+edfFile_EEG_right.drop_channels(
+    ['EEG left (uV)', 'Accelerometer X', 'Accelerometer Y', 'Accelerometer Z', 'PPG', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Audio (dB)', 'Mixed Channel', 'Status'])
 
-y_lr_train_pred = lr.predict(X_train)
-y_lr_test_pred = lr.predict(X_test)
+# Extract EEG left (uV) channel
+edfFile_EEG_left.drop_channels(
+    ['EEG right (uV)', 'Accelerometer X', 'Accelerometer Y', 'Accelerometer Z', 'PPG', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Audio (dB)', 'Mixed Channel', 'Status'])
 
-lr_train_mse = mean_squared_error(y_train, y_lr_train_pred)
-lr_train_r2 = r2_score(y_train, y_lr_train_pred)
-lr_test_mse = mean_squared_error(y_test, y_lr_test_pred)
-lr_test_r2 = r2_score(y_test, y_lr_test_pred)
+# Extract Mixed (uV) channel
+edfFileEEG_mixedChannel_uV.drop_channels(
+    ['EEG left (uV)', 'EEG right (uV)', 'Accelerometer X', 'Accelerometer Y', 'Accelerometer Z', 'PPG', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Audio (dB)', 'Status'])
 
-print(lr_train_mse)
+# Extract Accelerometer X axis channel
+edfFileEEG_accelerometer_X.drop_channels(
+    ['EEG left (uV)', 'EEG right (uV)', 'Accelerometer Y', 'Accelerometer Z', 'PPG', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Audio (dB)', 'Mixed Channel', 'Status'])
 
+# Extract Accelerometer Y axis channel
+edfFileEEG_accelerometer_Y.drop_channels(
+    ['EEG left (uV)', 'EEG right (uV)', 'Accelerometer X', 'Accelerometer Z', 'PPG', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Audio (dB)', 'Mixed Channel', 'Status'])
 
-lr_results = pd.DataFrame(['Linear regression',lr_train_mse, lr_train_r2, lr_test_mse, lr_test_r2]).transpose()
-lr_results.columns = ['Method','Training MSE','Training R2','Test MSE','Test R2']
+# Extract Accelerometer Z axis channel
+edfFileEEG_accelerometer_Z.drop_channels(
+    ['EEG left (uV)', 'EEG right (uV)', 'Accelerometer X', 'Accelerometer Y', 'PPG', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Audio (dB)', 'Mixed Channel', 'Status'])
 
-rf = RandomForestRegressor(max_depth=2, random_state=42)
-rf.fit(X_train, y_train)
+# Extract PPG channel
+edfFilePPG.drop_channels(
+    ['EEG left (uV)', 'EEG right (uV)', 'Accelerometer X', 'Accelerometer Y', 'Accelerometer Z', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Audio (dB)', 'Mixed Channel', 'Status'])
 
-y_rf_train_pred = rf.predict(X_train)
-y_rf_test_pred = rf.predict(X_test)
-
-rf_train_mse = mean_squared_error(y_train, y_rf_train_pred)
-rf_train_r2 = r2_score(y_train, y_rf_train_pred)
-rf_test_mse = mean_squared_error(y_test, y_rf_test_pred)
-rf_test_r2 = r2_score(y_test, y_rf_test_pred)
-
-rf_results = pd.DataFrame(['Random forest',rf_train_mse, rf_train_r2, rf_test_mse, rf_test_r2]).transpose()
-rf_results.columns = ['Method','Training MSE','Training R2','Test MSE','Test R2']
-
+# Extract Audio (dB) axis channel
+edfFileAudio_dB.drop_channels(
+    ['EEG left (uV)', 'EEG right (uV)', 'Accelerometer X', 'Accelerometer Y', 'PPG', 'Accelerometer Z', 'Body temperature',
+     'Room illuminatio', 'Battery (V)', 'Mixed Channel', 'Status'])
