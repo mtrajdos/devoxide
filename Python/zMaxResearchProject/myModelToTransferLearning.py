@@ -13,13 +13,15 @@ import time
 
 # Ask for user input to pick the raw .edf file
 print("Please select the raw .edf file of the sleep recording", file=sys.stderr)
-edfFile = filedialog.askopenfilename(filetypes=[("Edf Files", "*.edf")])
+edfPath = filedialog.askopenfilename(filetypes=[("Edf Files", "*.edf")])
+edfFile_EEG_left_uV = mne.io.read_raw_edf(edfPath, preload=True)
 
-# Open the .edf with MNE package to load and preprocess the data in Python
-edfFile_EEG_right_uV = mne.io.read_raw_edf(edfPath, preload=True)
+
+# Check the data types in the recording prior to transformation
+print(edfFile_EEG_left_uV.get_data().dtypes)
 
 # Make extra copies for other channel derivations
-edfFileEEG_left_uV = edfFile_EEG_right_uV
+edfFile_EEG_right_uV = edfFile_EEG_left_uV
 edfFileEEG_mixedChannel_uV = edfFile_EEG_right_uV
 edfFileAccelerometer_X = edfFile_EEG_right_uV
 edfFileAccelerometer_Y = edfFile_EEG_right_uV
