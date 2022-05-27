@@ -56,3 +56,22 @@ Battery_V = edfData[8]
 # the string that shows upon raw edf call, e.g.
 # <RawEDF | 21-03-2022.edf, 12 x 9050880 (35355.0 s), ~828.6 MB, data loaded>
 readings = int(str(edfFile).split(",")[1].split("x")[1].split("(")[0])  # | readings = 90550880
+
+# Create an empty dataframe with ordered columns
+df = pd.DataFrame(columns=['Reading', 'Time (s)', 'EEG right (uV)', 'EEG mixed (uV)', 'EEG left (uV)', 'Battery (V)', 'Acc X', 'Acc Y',
+                           'Acc Z', 'Audio (dB)', 'PPG'])
+
+# Populate the dataframe with extracted derivations
+df['EEG right (uV)'] = EEG_right_uV
+df['EEG mixed (uV)'] = EEG_mixed_uV
+df['EEG left (uV)'] = EEG_left_uV
+df['Battery (V)'] = Battery_V
+df['Acc X'] = Accelerometer_X
+df['Acc Y'] = Accelerometer_Y
+df['Acc Z'] = Accelerometer_Z
+df['Audio (dB)'] = Audio_dB
+df['PPG'] = PPG
+
+# Confirm a successful transformation to dataframe by printing data types in new table/dataframe
+print("Data types in df: " + str(df.dtypes))
+print("Df shape: " + str(df.shape))
