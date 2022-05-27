@@ -65,6 +65,19 @@ df = pd.DataFrame(columns=['Reading', 'Time (s)', 'EEG right (uV)', 'EEG mixed (
 df['EEG right (uV)'] = EEG_right_uV
 df['EEG mixed (uV)'] = EEG_mixed_uV
 df['EEG left (uV)'] = EEG_left_uV
+
+# Confirm a successful transformation to dataframe by printing data types in new table/dataframe
+print("Data types in df: " + str(df.dtypes))
+print("Df shape: " + str(df.shape))
+
+# Transform/flip the frontal derivations to central derivations in order to match the
+# data on which YASA was trained
+df.transform(lambda x: x * (-1))
+
+# Enlarge amplitudes of the derivation by 40%
+df.transform(lambda x: x * 1.4)
+
+# Post transformation of EEG derivations, populate remaining columns
 df['Battery (V)'] = Battery_V
 df['Acc X'] = Accelerometer_X
 df['Acc Y'] = Accelerometer_Y
@@ -72,6 +85,14 @@ df['Acc Z'] = Accelerometer_Z
 df['Audio (dB)'] = Audio_dB
 df['PPG'] = PPG
 
-# Confirm a successful transformation to dataframe by printing data types in new table/dataframe
-print("Data types in df: " + str(df.dtypes))
-print("Df shape: " + str(df.shape))
+# Post transformation, add hard-coded reading numbers to calculate timepoints for each row
+df['Reading'] = readings-1
+
+# TODO Populate the Time column
+
+
+# Print dataframe
+print(df)
+
+# Print dataframe shape
+print(df.shape)
