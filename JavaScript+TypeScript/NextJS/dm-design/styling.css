@@ -1,0 +1,52 @@
+* {
+    font-family: "Eurostile";
+    src: url("/Eurostile.ttf")
+}
+
+.container {
+    padding: 15px;
+}
+
+#topBar {
+    width: 100%;
+    height: auto;
+    background-color: #ecf4ff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#businessDesc {
+    font-size: 50px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+#contactDetails {
+    background-color: rgb(76, 76, 255, 0.09);
+    border-radius: 10px;
+    width: 15%;
+}
+
+#contactDetails h3 {
+    margin-left: 10px;
+    font-size: 30px;
+}
+
+#contactDetails Image, span, a {
+   padding: 10px;
+   font-size: 20px;
+}
+
+.contactTile {
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+}
+
+#navigationBar {
+    width: 100%;
+}
+

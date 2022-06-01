@@ -1,0 +1,55 @@
+<h1>User Register</h1>
+
+<form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)" novalidate>
+  <mat-form-field>
+    <label>Username</label>
+    <input matInput name="username" autocomplete="off" required #username="ngModel"
+           [class.is-invalid]="username.invalid && username.touched"
+           type="text" [ngModel]="registrationForm.username">
+    <small class="text-danger" [class.d-none]="username.valid || username.untouched">Username is required</small>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label>First Name</label>
+    <input matInput name="firstName" autocomplete="off" required #firstName="ngModel"
+           [class.is-invalid]="firstName.invalid && firstName.touched"
+           type="text" [ngModel]="registrationForm.firstName">
+    <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">First Name is required</small>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label>Last Name</label>
+    <input matInput name="lastName" autocomplete="off" required #lastName="ngModel"
+           [class.is-invalid]="lastName.invalid && lastName.touched"
+           type="text" [ngModel]="registrationForm.lastName">
+    <small class="text-danger" [class.d-none]="lastName.valid || lastName.untouched">Last Name is required</small>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label>Address</label>
+    <input matInput name="address" autocomplete="off" required #address="ngModel"
+           [class.is-invalid]="address.invalid && address.touched"
+           type="text" [ngModel]="registrationForm.address">
+    <small class="text-danger" [class.d-none]="address.valid || address.untouched">Address is required</small>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput name="email" autocomplete="off" required #email="ngModel"
+           [class.is-invalid]="email.invalid && email.touched"
+           pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="text" [ngModel]="registrationForm.email">
+    <small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label>Password</label>
+    <input matInput name="password" autocomplete="off" required #password="ngModel"
+           [class.is-invalid]="password.invalid && password.touched"
+           type="password" [ngModel]="registrationForm.password">
+    <small class="text-danger" [class.d-none]="password.valid || password.untouched">Password is required</small>
+  </mat-form-field>
+
+  <button [disabled]="userForm.form.invalid || username.untouched || email.untouched || password.untouched"
+          class="btn btn-primary" type="submit">Register
+  </button>
+</form>

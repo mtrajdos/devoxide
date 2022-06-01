@@ -1,0 +1,72 @@
+body {
+	background-color: royalblue;
+	font-family: font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+h1 {
+	color: white;
+	margin: auto;
+	border-radius: 25px;
+	
+}
+
+h2 {
+	color: white;
+	margin: auto;
+	border-radius: 25px;
+}
+
+h3 {
+	color: white;
+	margin: auto;
+	border-radius: 25px;
+}
+
+p {
+	color: white;
+}
+
+button {
+	background-color: navy;
+	color: white;
+	padding: 5px 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: auto;
+	border-radius: 25px;
+}
+
+a:link, a:visited {
+	background-color: navy;
+	color: white;
+	padding: 5px 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: auto;
+	border-radius: 25px;
+}
+
+a:hover, a:active {
+	background-color: blue;
+}
+
+input[type=text] {
+	border: 2px solid powderblue;
+	border-radius: 4px;
+	margin: auto;
+}
+
+input[type=password] {
+	border: 2px solid powderblue;
+	border-radius: 4px;
+	margin: auto;
+}
+
+label {
+	color: white;
+}

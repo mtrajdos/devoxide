@@ -1,0 +1,15 @@
+<p>Create New Room</p>
+
+<form (ngSubmit)="addRoom()">
+    <mat-form-field>
+        <mat-label>Room Type:</mat-label>
+        <input matInput name="roomType" required type="text" [(ngModel)]="addRoomForm.roomType">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Price:</mat-label>
+        <input matInput type="number" required name="price" require [(ngModel)]="addRoomForm.price">
+    </mat-form-field>
+    <div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+</form>

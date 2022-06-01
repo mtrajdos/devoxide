@@ -1,0 +1,18 @@
+<h1>Users</h1>
+<div *ngIf="!users">
+  There are no active users
+</div>
+<div class="users" *ngFor="let user of users">
+  <h2>{{ user.username }}</h2>
+  <p>Name: {{user.firstName}} {{user.lastName}}</p>
+  <mat-chip-list>
+    Roles:
+    <mat-chip *ngFor="let role of user.roles">
+      {{ role.roleName.replace('ROLE_', '').toLowerCase() }}
+    </mat-chip>
+  </mat-chip-list>
+  <br>
+  <button class="btn btn-primary" routerLink="/edit-user/{{ user.username}}">Edit</button>
+  <br>
+  <br>
+</div>

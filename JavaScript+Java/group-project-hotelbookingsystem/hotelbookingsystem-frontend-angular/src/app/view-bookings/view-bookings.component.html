@@ -1,0 +1,19 @@
+<div class="container">
+  <h2>Bookings list</h2>
+  <div *ngIf="bookings.length < 1">
+    You have no bookings
+  </div>
+  <div class="booking" *ngFor="let booking of bookings" >
+    <h2>{{ booking.hotel }}</h2>
+    <p>Total price: £{{ booking.totalPrice }}</p>
+    <ul>
+      <li>From: {{ booking.checkInDate}}</li>
+      <li>To: {{ booking.checkOutDate}}</li>
+      <li>Room type: {{ booking.roomType.toLowerCase() }} @ £{{booking.roomPrice }} per night</li>
+      <li *ngIf="booking.extrasPrice != 0">Extras: {{ booking.extras.toLowerCase() }} @ £{{ booking.extrasPrice }}</li>
+    </ul>
+    <h3></h3>
+    <button class="btn btn-primary" [routerLink]="['/add-review', booking.hotel, booking.bookingId]">Add Review</button>
+
+  </div>
+</div>

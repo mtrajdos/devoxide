@@ -1,0 +1,26 @@
+<h2>Create New Review</h2>
+
+<h2>{{currentBooking.hotel}}</h2>
+
+<p>Check-In Date: {{currentBooking.checkInDate}}</p>
+<p>Check-Out Date:  {{currentBooking.checkOutDate}}</p>
+<p>Total Cost of Stay: {{currentBooking.totalPrice}}</p>
+<br>
+<form (ngSubmit)="addReview()">
+  <mat-form-field appearance="fill">
+    <mat-label>Comment:</mat-label>
+    <textarea matInput name="message" required autocomplete="off"
+              type="text" [(ngModel)]="addReviewForm.message">
+             </textarea>
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Rating:</mat-label>
+    <input matInput type="number" max="10" min="0" name="starRating" required
+           [(ngModel)]="addReviewForm.score">
+  </mat-form-field>
+  <br>
+  <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+
+
