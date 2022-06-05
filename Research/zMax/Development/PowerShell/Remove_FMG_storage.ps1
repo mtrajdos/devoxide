@@ -1,1 +1,0 @@
-Remove-SmbMapping -LocalPath "Y:" -Force
